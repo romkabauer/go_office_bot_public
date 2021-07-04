@@ -1,0 +1,7 @@
+aiogram==2.12.1
+aiohttp>=3.7.4
+aioschedule==0.5.2
+boto3==1.17.105
+requests==2.25.0
+typing-extensions==3.7.4.3
+typing-inspect==0.6.0
