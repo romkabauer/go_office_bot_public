@@ -73,7 +73,8 @@ async def create_pool():
                                     question=pool_question, \
                                     options=pool_options, \
                                     is_anonymous=False, \
-                                    allows_multiple_answers=False)
+                                    allows_multiple_answers=False, \
+                                    disable_notification=True)
     else:
         logger.debug("Go get some rest! Weekend is here!")
 
@@ -86,7 +87,7 @@ async def scheduler():
         await aioschedule.run_pending()
         await asyncio.sleep(1)
 
-async def load_store_from_s3(output):
+async def load_storage_from_s3(output):
     client = boto3.client(
         's3',
         aws_access_key_id = environ["AWS_ACCESS_KEY"],
@@ -103,7 +104,7 @@ async def load_store_from_s3(output):
     
 
 async def on_startup(_):
-    asyncio.create_task(load_store_from_s3(output))
+    asyncio.create_task(load_storage_from_s3(output))
     asyncio.create_task(scheduler())
 
 async def shutdown(dp):
