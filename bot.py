@@ -32,7 +32,7 @@ dp.middleware.setup(LoggingMiddleware())
 
 session: aiohttp.ClientSession = aiohttp.ClientSession()
 
-output = './chats_to_handle.txt'
+chat_id_storage_path = 'chats_to_handle_test.txt'
 
 async def update_s3_storage_file(content):
     client = boto3.client(
@@ -43,20 +43,20 @@ async def update_s3_storage_file(content):
     )
     client.put_object(
         Bucket = 'goofficebot',
-        Key = 'chats_to_handle.txt',
+        Key = chat_id_storage_path,
         Body = content
     )
 
 @dp.message_handler(commands='set_time')
 async def start_command(message: types.Message):
     is_changed = False
-    with open(output, 'r') as chats:
+    with open(chat_id_storage_path, 'r') as chats:
         if all(str(message.chat.id) not in x for x in chats.readlines()):
             is_changed = True
     if is_changed:
-        with open(output, 'a+') as chats:
+        with open(chat_id_storage_path, 'a+') as chats:
             chats.write(str(message.chat.id) + '\n')
-        with open(output, 'r') as chats:
+        with open(chat_id_storage_path, 'r') as chats:
             await update_s3_storage_file(chats.read())
         logger.debug(f"{datetime.datetime.now()}: " + \
                     f"Chat with ID: {message.chat.id}" + \
@@ -67,7 +67,7 @@ async def create_pool():
     if datetime.date.today().weekday() != 4 \
        or datetime.date.today().weekday() != 5:
         logger.debug("Posting pool!")
-        with open('./chats_to_handle.txt', 'r') as chats_file:
+        with open(chat_id_storage_path, 'r') as chats_file:
             for chat in chats_file.readlines():
                 await bot.send_poll(chat_id=int(chat), \
                                     question=pool_question, \
@@ -81,13 +81,13 @@ async def create_pool():
 async def scheduler():
     # aioschedule.every().minute.do(create_pool)
     aioschedule.every().day \
-                       .at("15:00") \
+                       .at("15:37") \
                        .do(create_pool)
     while True:
         await aioschedule.run_pending()
         await asyncio.sleep(1)
 
-async def load_storage_from_s3(output):
+async def load_storage_from_s3(chat_id_storage_path):
     client = boto3.client(
         's3',
         aws_access_key_id = environ["AWS_ACCESS_KEY"],
@@ -96,15 +96,15 @@ async def load_storage_from_s3(output):
     )
     obj = client.get_object(
         Bucket = 'goofficebot',
-        Key = 'chats_to_handle.txt'
+        Key = chat_id_storage_path
     )
     storage_data = obj['Body'].read().decode('utf-8')
-    with open(output, "w") as f:
+    with open(chat_id_storage_path, "w") as f:
         f.write(storage_data)
     
 
 async def on_startup(_):
-    asyncio.create_task(load_storage_from_s3(output))
+    asyncio.create_task(load_storage_from_s3(chat_id_storage_path))
     asyncio.create_task(scheduler())
 
 async def shutdown(dp):
