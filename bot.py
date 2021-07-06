@@ -71,8 +71,8 @@ async def create_pool():
         with open(chat_id_storage_path, 'r') as chats_file:
             for chat in chats_file.readlines():
                 await bot.send_poll(chat_id=int(chat), \
-                                    question = datetime.date.today() + 
-                                               timedelta(days=1) \
+                                    question = (datetime.date.today() + 
+                                               timedelta(days=1)) \
                                                .strftime("%A, %d %B") \
                                                + '🏢🚶‍♂️?', \
                                     options=pool_options, \
@@ -85,7 +85,7 @@ async def create_pool():
 async def scheduler():
     # aioschedule.every().minute.do(create_pool)
     aioschedule.every().day \
-                       .at("15:35") \
+                       .at("15:47") \
                        .do(create_pool)
     while True:
         await aioschedule.run_pending()
