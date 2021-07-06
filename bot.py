@@ -4,6 +4,7 @@
 
 import logging
 import datetime
+from datetime import timedelta
 import boto3
 
 import aiohttp
@@ -70,7 +71,10 @@ async def create_pool():
         with open(chat_id_storage_path, 'r') as chats_file:
             for chat in chats_file.readlines():
                 await bot.send_poll(chat_id=int(chat), \
-                                    question=pool_question, \
+                                    question = datetime.date.today() + 
+                                               timedelta(days=1) \
+                                               .strftime("%A, %d %B") \
+                                               + '🏢🚶‍♂️?', \
                                     options=pool_options, \
                                     is_anonymous=False, \
                                     allows_multiple_answers=False, \
