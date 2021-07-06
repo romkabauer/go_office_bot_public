@@ -17,7 +17,7 @@ from asyncio import AbstractEventLoop
 import asyncio
 
 from os import environ
-from pool_settings import pool_question, pool_options
+from pool_settings import pool_options
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
