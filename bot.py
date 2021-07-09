@@ -74,7 +74,7 @@ async def create_pool():
                                     question = (datetime.date.today() + 
                                                timedelta(days=1)) \
                                                .strftime("%A, %d %B") \
-                                               + '🏢🚶‍♂️?', \
+                                               + ' 🏢🚶‍♂️?', \
                                     options=pool_options, \
                                     is_anonymous=False, \
                                     allows_multiple_answers=False, \
