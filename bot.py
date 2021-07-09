@@ -65,8 +65,8 @@ async def start_command(message: types.Message):
     await message.reply("Буду постить опрос в 18:00 по рабочим дням.")
 
 async def create_pool():
-    if datetime.date.today().weekday() != 4 \
-       or datetime.date.today().weekday() != 5:
+    if not (datetime.date.today().weekday() == 4 \
+       or datetime.date.today().weekday() == 5):
         logger.debug("Posting pool!")
         with open(chat_id_storage_path, 'r') as chats_file:
             for chat in chats_file.readlines():
