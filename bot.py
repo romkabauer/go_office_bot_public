@@ -64,6 +64,15 @@ async def start_command(message: types.Message):
                     f" was added to the list.")
     await message.reply("Буду постить опрос в 18:00 по рабочим дням.")
 
+@dp.message_handler(commands='zubeki')
+async def zubeki_command(message: types.Message):
+    await message.reply(f"*{message.from_user.username} приглашает съездить на обед к Зубекам!*" + \
+                            f"\n\n*Что:* Вкусная узбекская кухня (лагман, самса, плов, манты)" + \
+                            f"\n*Где:* Нарвский проспект, 18" + \
+                            f"\n*Оплата только наличными*",
+                        reply=False,
+                        parse_mode='Markdown')
+
 async def create_pool():
     if not (datetime.date.today().weekday() == 4 \
        or datetime.date.today().weekday() == 5):
