@@ -68,7 +68,7 @@ async def start_command(message: types.Message):
 async def zubeki_command(message: types.Message):
     await message.reply(f"*{message.from_user.full_name} приглашает съездить на обед к Зубекам!*" + \
                             f"\n\n*Что:* Вкусная узбекская кухня (лагман, самса, плов, манты)" + \
-                            f"\n*Где:* Нарвский проспект, 18" + \
+                            f"\n*Где:* Нарвский проспект, 18 (нужен кто-то на машине)" + \
                             f"\n*Оплата только наличными*",
                         reply=False,
                         parse_mode='Markdown')
