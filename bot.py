@@ -66,7 +66,7 @@ async def start_command(message: types.Message):
 
 @dp.message_handler(commands='zubeki')
 async def zubeki_command(message: types.Message):
-    await message.reply(f"*{message.from_user.username} приглашает съездить на обед к Зубекам!*" + \
+    await message.reply(f"*{message.from_user.full_name} приглашает съездить на обед к Зубекам!*" + \
                             f"\n\n*Что:* Вкусная узбекская кухня (лагман, самса, плов, манты)" + \
                             f"\n*Где:* Нарвский проспект, 18" + \
                             f"\n*Оплата только наличными*",
