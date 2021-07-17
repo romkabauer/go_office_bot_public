@@ -83,19 +83,18 @@ async def zubeki_command(message: types.Message):
 
 @dp.message_handler(commands='lunch')
 async def lunch_command(message: types.Message):
-    await message.reply(f"*{message.from_user.full_name}* приглашает на обед в ",
+    await message.reply(f"*{message.from_user.full_name}* приглашает на обед.\n",
                         reply=False,
                         reply_markup=lunch_keyboard,
-                        parse_mode='Markdown')
+                        parse_mode="Markdown")
 
 
 @dp.callback_query_handler()
 async def process_callback_kb1btn1(callback_query: types.CallbackQuery):
-    data = callback_query.data
-    if data == "13:00":
-        await callback_query.message.edit_text(callback_query.message.text + data)
-    else:
-        await callback_query.message.edit_text(callback_query.message.text + data)
+    await callback_query.message.edit_text(callback_query.message.text + \
+                                                f"{callback_query.from_user.fullname} собирается на обед в *" + \
+                                                callback_query.data + "*",
+                                                parse_mode="Markdown")
 
 async def create_pool():
     if not (datetime.date.today().weekday() == 4 \
