@@ -5,6 +5,7 @@
 import logging
 import datetime
 from datetime import timedelta
+from typing import Text
 import boto3
 
 import aiohttp
@@ -15,6 +16,9 @@ from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from aiogram.contrib.middlewares.logging import LoggingMiddleware
 from asyncio import AbstractEventLoop
 import asyncio
+from aiogram.types import KeyboardButton, \
+                          InlineKeyboardMarkup, \
+                          InlineKeyboardButton
 
 from os import environ
 from pool_settings import pool_options
@@ -34,6 +38,10 @@ dp.middleware.setup(LoggingMiddleware())
 session: aiohttp.ClientSession = aiohttp.ClientSession()
 
 chat_id_storage_path = 'chats_to_handle.txt'
+
+btn1300 = InlineKeyboardButton("13:00", callback_data="13:00")
+btn1315 = InlineKeyboardButton("13:15", callback_data="13:15")
+lunch_keyboard = InlineKeyboardMarkup(row_width=2).add(btn1300, btn1315)
 
 async def update_s3_storage_file(content):
     client = boto3.client(
@@ -72,6 +80,22 @@ async def zubeki_command(message: types.Message):
                             f"\n*Оплата только наличными*",
                         reply=False,
                         parse_mode='Markdown')
+
+@dp.message_handler(commands='lunch')
+async def lunch_command(message: types.Message):
+    await message.reply(f"*{message.from_user.full_name}* приглашает на обед в ",
+                        reply=False,
+                        reply_markup=lunch_keyboard,
+                        parse_mode='Markdown')
+
+
+@dp.callback_query_handler(func=lambda c: c.data)
+async def process_callback_kb1btn1(callback_query: types.CallbackQuery):
+    data = callback_query.data
+    if data == "13:00":
+        await bot.edit_message_text(inline_message_id=callback_query.inline_message_id, text=callback_query.message + data)
+    else:
+        await bot.edit_message_text(inline_message_id=callback_query.inline_message_id, text=callback_query.message + data)
 
 async def create_pool():
     if not (datetime.date.today().weekday() == 4 \
