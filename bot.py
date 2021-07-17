@@ -93,9 +93,9 @@ async def lunch_command(message: types.Message):
 async def process_callback_kb1btn1(callback_query: types.CallbackQuery):
     data = callback_query.data
     if data == "13:00":
-        await bot.edit_message_text(inline_message_id=callback_query.inline_message_id, text=callback_query.message + data)
+        await bot.edit_message_text(inline_message_id=callback_query.inline_message_id, text=callback_query.message.text + data)
     else:
-        await bot.edit_message_text(inline_message_id=callback_query.inline_message_id, text=callback_query.message + data)
+        await bot.edit_message_text(inline_message_id=callback_query.inline_message_id, text=callback_query.message.text + data)
 
 async def create_pool():
     if not (datetime.date.today().weekday() == 4 \
