@@ -96,7 +96,7 @@ async def process_callback_kb1btn1(callback_query: types.CallbackQuery):
     await callback_query.answer()
     todays_office_attendee[callback_query.from_user.full_name] = f" собирается на обед в *" + \
                                                 callback_query.data + "*"
-    expected_lunch_times = "\n".join([k + v for k, v in todays_office_attendee])
+    expected_lunch_times = "\n".join([k + v for k, v in todays_office_attendee.items()])
     await callback_query.message.edit_text(callback_query.message.text + \
                                                 expected_lunch_times,
                                                 reply_markup=lunch_keyboard,
