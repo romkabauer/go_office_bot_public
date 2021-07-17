@@ -91,8 +91,9 @@ async def lunch_command(message: types.Message):
 
 @dp.callback_query_handler()
 async def process_callback_kb1btn1(callback_query: types.CallbackQuery):
+    await callback_query.answer()
     await callback_query.message.edit_text(callback_query.message.text + \
-                                                f"{callback_query.from_user.full_name} собирается на обед в *" + \
+                                                f"\n{callback_query.from_user.full_name} собирается на обед в *" + \
                                                 callback_query.data + "*",
                                                 reply_markup=lunch_keyboard,
                                                 parse_mode="Markdown")
