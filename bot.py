@@ -89,7 +89,7 @@ async def lunch_command(message: types.Message):
                         parse_mode='Markdown')
 
 
-@dp.callback_query_handler(func=lambda c: c.data)
+@dp.callback_query_handler()
 async def process_callback_kb1btn1(callback_query: types.CallbackQuery):
     data = callback_query.data
     if data == "13:00":
