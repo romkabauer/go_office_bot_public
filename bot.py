@@ -39,12 +39,6 @@ session: aiohttp.ClientSession = aiohttp.ClientSession()
 
 chat_id_storage_path = 'chats_to_handle.txt'
 
-btn1300 = InlineKeyboardButton("13:00", callback_data="13:00")
-btn1315 = InlineKeyboardButton("13:15", callback_data="13:15")
-lunch_keyboard = InlineKeyboardMarkup(row_width=2).add(btn1300, btn1315)
-
-todays_office_attendee = {}
-
 async def update_s3_storage_file(content):
     client = boto3.client(
         's3',
@@ -82,25 +76,6 @@ async def zubeki_command(message: types.Message):
                             f"\n*Оплата только наличными*",
                         reply=False,
                         parse_mode='Markdown')
-
-@dp.message_handler(commands='lunch')
-async def lunch_command(message: types.Message):
-    await message.reply(f"*{message.from_user.full_name}* приглашает на обед.\n",
-                        reply=False,
-                        reply_markup=lunch_keyboard,
-                        parse_mode="Markdown")
-
-
-@dp.callback_query_handler()
-async def process_callback_kb1btn1(callback_query: types.CallbackQuery):
-    await callback_query.answer()
-    todays_office_attendee[callback_query.from_user.full_name] = f" собирается на обед в *" + \
-                                                callback_query.data + "*"
-    expected_lunch_times = "\n".join([k + v for k, v in todays_office_attendee.items()])
-    await callback_query.message.edit_text(callback_query.message.text + \
-                                                expected_lunch_times,
-                                                reply_markup=lunch_keyboard,
-                                                parse_mode="Markdown")
 
 async def create_pool():
     if not (datetime.date.today().weekday() == 4 \
