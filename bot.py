@@ -37,7 +37,7 @@ dp.middleware.setup(LoggingMiddleware())
 
 session: aiohttp.ClientSession = aiohttp.ClientSession()
 
-chat_id_storage_path = 'chats_to_handle_test.txt'
+chat_id_storage_path = 'chats_to_handle.txt'
 
 async def update_s3_storage_file(content):
     client = boto3.client(
@@ -98,7 +98,7 @@ async def create_pool():
 async def scheduler():
     # aioschedule.every().minute.do(create_pool)
     aioschedule.every().day \
-                       .at("18:21") \
+                       .at("18:26") \
                        .do(create_pool)
     while True:
         await aioschedule.run_pending()
