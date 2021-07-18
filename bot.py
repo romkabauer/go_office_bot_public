@@ -16,9 +16,6 @@ from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from aiogram.contrib.middlewares.logging import LoggingMiddleware
 from asyncio import AbstractEventLoop
 import asyncio
-from aiogram.types import KeyboardButton, \
-                          InlineKeyboardMarkup, \
-                          InlineKeyboardButton
 
 from os import environ
 from pool_settings import pool_options
@@ -102,7 +99,7 @@ async def scheduler():
                        .do(create_pool)
     while True:
         await aioschedule.run_pending()
-        await asyncio.sleep(1)
+        await asyncio.sleep(120)
 
 async def load_storage_from_s3(chat_id_storage_path):
     client = boto3.client(
