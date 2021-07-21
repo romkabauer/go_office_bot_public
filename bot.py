@@ -79,7 +79,7 @@ async def start_command(message: types.Message):
             logger.debug("Debug: " + str(chats_list))
         try:
             logger.debug(chats_list)
-            chats_list.remove(str(message.chat.id))
+            chats_list.remove(str(message.chat.id) + "\n")
             with open(chat_id_storage_path, 'w') as chats:
                 for chat_id in chats_list:
                     chats.write(chat_id + '\n')
@@ -127,7 +127,7 @@ async def create_pool():
 async def scheduler():
     # aioschedule.every().minute.do(create_pool)
     aioschedule.every().day \
-                       .at("12:38") \
+                       .at("12:45") \
                        .do(create_pool)
     while True:
         await aioschedule.run_pending()
