@@ -69,7 +69,7 @@ async def start_command(message: types.Message):
 async def start_command(message: types.Message):
     is_changed = False
     with open(chat_id_storage_path, 'r') as chats:
-        if all(str(message.chat.id) not in x for x in chats.readlines()):
+        if any(str(message.chat.id) in x for x in chats.readlines()):
             is_changed = True
     if is_changed:
         chats_list = []
@@ -124,7 +124,7 @@ async def create_pool():
 async def scheduler():
     # aioschedule.every().minute.do(create_pool)
     aioschedule.every().day \
-                       .at("11:55") \
+                       .at("12:01") \
                        .do(create_pool)
     while True:
         await aioschedule.run_pending()
