@@ -94,7 +94,7 @@ async def start_command(message: types.Message):
             await message.reply("Чтобы начать постить опрос, вызови /settime.",
                             reply=False)
     else:
-        await message.reply("Чтобы начать постить опрос, вызови /settime.",
+        await message.reply("Чтобы начать постить опрос, вызови /settime!",
                             reply=False)
 
 @dp.message_handler(commands='zubeki')
@@ -127,7 +127,7 @@ async def create_pool():
 async def scheduler():
     # aioschedule.every().minute.do(create_pool)
     aioschedule.every().day \
-                       .at("12:25") \
+                       .at("12:31") \
                        .do(create_pool)
     while True:
         await aioschedule.run_pending()
