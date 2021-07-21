@@ -49,7 +49,7 @@ async def update_s3_storage_file(content):
         Body = content
     )
 
-@dp.message_handler(commands='set_time')
+@dp.message_handler(commands='settime')
 async def start_command(message: types.Message):
     is_changed = False
     with open(chat_id_storage_path, 'r') as chats:
@@ -63,7 +63,36 @@ async def start_command(message: types.Message):
         logger.debug(f"{datetime.datetime.now()}: " + \
                     f"Chat with ID: {message.chat.id}" + \
                     f" was added to the list.")
-    await message.reply("Буду постить опрос в 18:00 по рабочим дням.")
+    await message.reply("Буду постить опрос в 21:00 с вс по чт.")
+
+@dp.message_handler(commands='stop')
+async def start_command(message: types.Message):
+    is_changed = False
+    with open(chat_id_storage_path, 'r') as chats:
+        if all(str(message.chat.id) not in x for x in chats.readlines()):
+            is_changed = True
+    if is_changed:
+        chats_list = []
+        with open(chat_id_storage_path, 'r') as chats:
+            chats_list = chats.readlines()
+        try:
+            chats_list.remove(str(message.chat.id))
+            with open(chat_id_storage_path, 'w') as chats:
+                for chat_id in chats_list:
+                    chats.write(chat_id + '\n')
+            with open(chat_id_storage_path, 'r') as chats:
+                await update_s3_storage_file(chats.read())
+                logger.debug(f"{datetime.datetime.now()}: " + \
+                            f"Chat with ID: {message.chat.id}" + \
+                            f" was removed from the list.")
+            await message.reply("Больше постить опросы не буду. Чтобы возобновить, вызови /settime.",
+                                reply=False)
+        except ValueError:
+            await message.reply("Чтобы начать постить опрос, вызови /settime.",
+                            reply=False)
+    else:
+        await message.reply("Чтобы начать постить опрос, вызови /settime.",
+                            reply=False)
 
 @dp.message_handler(commands='zubeki')
 async def zubeki_command(message: types.Message):
@@ -95,7 +124,7 @@ async def create_pool():
 async def scheduler():
     # aioschedule.every().minute.do(create_pool)
     aioschedule.every().day \
-                       .at("11:30") \
+                       .at("11:55") \
                        .do(create_pool)
     while True:
         await aioschedule.run_pending()
