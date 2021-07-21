@@ -112,7 +112,8 @@ async def create_pool():
         logger.debug("Posting pool!")
         with open(chat_id_storage_path, 'r') as chats_file:
             for chat in chats_file.readlines():
-                await bot.send_poll(chat_id=int(chat), \
+                try:
+                    await bot.send_poll(chat_id=int(chat), \
                                     question = (datetime.date.today() + 
                                                timedelta(days=1)) \
                                                .strftime("%A, %d %B") \
@@ -121,13 +122,16 @@ async def create_pool():
                                     is_anonymous=False, \
                                     allows_multiple_answers=False, \
                                     disable_notification=True)
+                except Exception as e:
+                    logger.error(e.args)
+                    pass
     else:
         logger.debug("Go get some rest! Weekend is here!")
 
 async def scheduler():
     # aioschedule.every().minute.do(create_pool)
     aioschedule.every().day \
-                       .at("12:55") \
+                       .at("13:10") \
                        .do(create_pool)
     while True:
         await aioschedule.run_pending()
