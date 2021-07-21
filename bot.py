@@ -113,7 +113,7 @@ async def create_pool():
         with open(chat_id_storage_path, 'r') as chats_file:
             for chat in chats_file.readlines():
                 try:
-                    await bot.send_poll(chat_id=int(chat), \
+                    await bot.send_poll(chat_id=int(chat.strip()), \
                                     question = (datetime.date.today() + 
                                                timedelta(days=1)) \
                                                .strftime("%A, %d %B") \
