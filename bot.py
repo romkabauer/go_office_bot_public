@@ -137,7 +137,7 @@ async def create_pool():
 async def scheduler():
     # aioschedule.every().minute.do(create_pool)
     aioschedule.every().day \
-                       .at("18:00") \
+                       .at("8:12") \
                        .do(create_pool)
     while True:
         await aioschedule.run_pending()
