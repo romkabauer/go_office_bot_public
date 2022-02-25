@@ -113,8 +113,8 @@ async def create_pool():
     EXEPTIONAL_WORKINGDAYS = ['2022-03-05']
 
     if (not (datetime.date.today().weekday() == 4 or datetime.date.today().weekday() == 5) or \
-        datetime.date.today().isoformat() not in HOLIDAYS) or \
-        datetime.date.today().isoformat() in EXEPTIONAL_WORKINGDAYS:
+        (datetime.date.today() + datetime.timedelta(days=1)).isoformat() not in HOLIDAYS) or \
+        (datetime.date.today() + datetime.timedelta(days=1)).isoformat() in EXEPTIONAL_WORKINGDAYS:
         logger.debug("Posting pool!")
         with open(chat_id_storage_path, 'r') as chats_file:
             for chat in chats_file.readlines():
