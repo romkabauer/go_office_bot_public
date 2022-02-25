@@ -105,6 +105,11 @@ async def zubeki_command(message: types.Message):
                             f"\n*Оплата только наличными*",
                         reply=False,
                         parse_mode='Markdown')
+    await message.answer_poll(question="Кто хочет поехать?", \
+                              options=zubeki_options, \
+                              is_anonymous=False, \
+                              allows_multiple_answers=False, \
+                              disable_notification=True)
 
 async def create_pool():
     HOLIDAYS = ['2022-03-08', '2022-02-23', '2022-05-02', 
@@ -112,7 +117,7 @@ async def create_pool():
                 '2022-06-13', '2022-11-04']
     EXEPTIONAL_WORKINGDAYS = ['2022-03-05']
 
-    if (not (datetime.date.today().weekday() == 4 or datetime.date.today().weekday() == 5) or \
+    if (not (datetime.date.today().weekday() == 4 or datetime.date.today().weekday() == 5) and \
         (datetime.date.today() + datetime.timedelta(days=1)).isoformat() not in HOLIDAYS) or \
         (datetime.date.today() + datetime.timedelta(days=1)).isoformat() in EXEPTIONAL_WORKINGDAYS:
         logger.debug("Posting pool!")
