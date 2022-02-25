@@ -18,7 +18,7 @@ from asyncio import AbstractEventLoop
 import asyncio
 
 from os import environ
-from pool_settings import pool_options
+from pool_settings import pool_options, zubeki_options
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -107,8 +107,14 @@ async def zubeki_command(message: types.Message):
                         parse_mode='Markdown')
 
 async def create_pool():
-    if not (datetime.date.today().weekday() == 4 \
-       or datetime.date.today().weekday() == 5):
+    HOLIDAYS = ['2022-03-08', '2022-02-23', '2022-05-02', 
+                '2022-05-03', '2022-05-09', '2022-05-10', 
+                '2022-06-13', '2022-11-04']
+    EXEPTIONAL_WORKINGDAYS = ['2022-03-05']
+
+    if (not (datetime.date.today().weekday() == 4 or datetime.date.today().weekday() == 5) or \
+        datetime.date.today().isoformat() not in HOLIDAYS) or \
+        datetime.date.today().isoformat() in EXEPTIONAL_WORKINGDAYS:
         logger.debug("Posting pool!")
         with open(chat_id_storage_path, 'r') as chats_file:
             for chat in chats_file.readlines():
