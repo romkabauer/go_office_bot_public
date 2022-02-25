@@ -34,7 +34,7 @@ dp.middleware.setup(LoggingMiddleware())
 
 session: aiohttp.ClientSession = aiohttp.ClientSession()
 
-chat_id_storage_path = 'chats_to_handle_test.txt'
+chat_id_storage_path = 'chats_to_handle.txt'
 
 async def update_s3_storage_file(content):
     client = boto3.client(
