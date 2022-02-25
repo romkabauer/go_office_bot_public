@@ -117,7 +117,7 @@ async def create_pool():
                 '2022-06-13', '2022-11-04']
     EXEPTIONAL_WORKINGDAYS = ['2022-03-05']
 
-    if (not (datetime.date.today().weekday() == 4 or datetime.date.today().weekday() == 5) or \
+    if (not (datetime.date.today().weekday() == 4 or datetime.date.today().weekday() == 5) and \
         (datetime.date.today() + datetime.timedelta(days=1)).isoformat() not in HOLIDAYS) or \
         (datetime.date.today() + datetime.timedelta(days=1)).isoformat() in EXEPTIONAL_WORKINGDAYS:
         logger.debug("Posting pool!")
